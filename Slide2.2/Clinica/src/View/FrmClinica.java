@@ -4,6 +4,13 @@
  */
 package View;
 
+import Model.Paciente;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author fatec-dsm2
@@ -17,6 +24,30 @@ public class FrmClinica extends javax.swing.JFrame {
         initComponents();
     }
 
+Paciente pac = new Paciente();
+    
+    public void consultar(){
+        ResultSet tabela;
+        tabela = null;
+        
+        //CHAMAR O MÉTODO CONSULTAR
+        tabela = pac.consultarr();
+
+        DefaultTableModel modelo = (DefaultTableModel) tblPaciente.getModel();
+        modelo.setNumRows(0);
+
+        try{
+            do{
+                modelo.addRow(new String[] {tabela.getString(2), tabela.getString(3),tabela.getString(4),tabela.getString(5),tabela.getString(6),tabela.getString(7)});
+            }
+            while(tabela.next());
+        }
+        catch(SQLException erro){
+            JOptionPane.showMessageDialog(null,"Erro preencher tabela" + erro);
+
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,7 +72,7 @@ public class FrmClinica extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtData = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtCod6 = new javax.swing.JTextField();
+        txtCpf = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnCadastrar = new javax.swing.JButton();
@@ -50,7 +81,7 @@ public class FrmClinica extends javax.swing.JFrame {
         btnLimpar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbtClientes = new javax.swing.JTable();
+        tblPaciente = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,9 +120,9 @@ public class FrmClinica extends javax.swing.JFrame {
 
         jLabel7.setText("Dada Nascimento");
 
-        txtCod6.addActionListener(new java.awt.event.ActionListener() {
+        txtCpf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCod6ActionPerformed(evt);
+                txtCpfActionPerformed(evt);
             }
         });
 
@@ -99,25 +130,48 @@ public class FrmClinica extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 255));
 
+        btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/cadastros.png"))); // NOI18N
         btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/pencil.png"))); // NOI18N
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/delete.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
-                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(btnCadastrar)
+                .addGap(42, 42, 42)
+                .addComponent(btnAlterar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                .addComponent(btnExcluir)
                 .addGap(43, 43, 43)
                 .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47))
@@ -127,8 +181,9 @@ public class FrmClinica extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(91, Short.MAX_VALUE))
@@ -136,7 +191,7 @@ public class FrmClinica extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 255));
 
-        tbtClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tblPaciente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -147,7 +202,7 @@ public class FrmClinica extends javax.swing.JFrame {
                 "Codigo Paciente", "Nome Paciente", "Endereco", "Complemento", "RG", "CPF", "Data Nascimento"
             }
         ));
-        jScrollPane1.setViewportView(tbtClientes);
+        jScrollPane1.setViewportView(tblPaciente);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -186,7 +241,7 @@ public class FrmClinica extends javax.swing.JFrame {
                                 .addGap(38, 38, 38)
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCod6, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtComplemento)
                             .addComponent(txtEndereco)
                             .addComponent(txtNome)))
@@ -225,7 +280,7 @@ public class FrmClinica extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCod6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -256,9 +311,53 @@ public class FrmClinica extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCod6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCod6ActionPerformed
+    private void txtCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCpfActionPerformed
+        // TODO add your handling code here:    
+    }//GEN-LAST:event_txtCpfActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        // TODO add your handling code here:                                           
+    pac.setCodPaciente(Integer.parseInt(txtCod.getText()));
+    pac.setNome(txtNome.getText());
+    pac.setEndereco(txtEndereco.getText());
+    pac.setComplemento(txtComplemento.getText());
+    pac.setRg(txtRg.getText());
+    pac.setCpf(txtCpf.getText());
+    pac.setData(txtData.getText());
+    pac.cadastrar();
+    consultar();    
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCod6ActionPerformed
+        txtCod.setText("");
+        txtNome.setText("");
+        txtEndereco.setText("");
+        txtComplemento.setText("");
+        txtRg.setText("");
+        txtCpf.setText("");
+        txtData.setText("");
+    }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        pac.setCodPaciente(Integer.parseInt(txtCod.getText()));
+        pac.excluir();
+        consultar();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        // TODO add your handling code here:
+        pac.setCodPaciente(Integer.parseInt(txtCod.getText()));
+        pac.setNome(txtNome.getText());
+        pac.setEndereco(txtEndereco.getText());
+        pac.setComplemento(txtComplemento.getText());
+        pac.setRg(txtRg.getText());
+        pac.setCpf(txtCpf.getText());
+        pac.setRg(txtData.getText());
+        pac.alterar(); 
+        consultar();
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,10 +412,10 @@ public class FrmClinica extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbtClientes;
+    private javax.swing.JTable tblPaciente;
     private javax.swing.JTextField txtCod;
-    private javax.swing.JTextField txtCod6;
     private javax.swing.JTextField txtComplemento;
+    private javax.swing.JTextField txtCpf;
     private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtNome;

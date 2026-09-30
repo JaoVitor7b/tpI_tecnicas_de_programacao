@@ -19,7 +19,7 @@ public class Conexao {
     // Conexão do Java com banco de dados
     final private String driver = "com.mysql.jdbc.Driver";
     // Conexão com o banco de dados
-    final private String url= "jdbc:mysql://127.0.0.1/bancoTPI";
+    final private String url= "jdbc:mysql://127.0.0.1/BancoTPI";
     
     final private String usuario="root";
     final private String senha="";
