@@ -17,9 +17,9 @@ import javax.swing.JOptionPane;
  */
 public class Conexao {
     // Conexão do Java com banco de dados
-    final private String driver = "com.mysql.jdbc.Driver";
+    final private String driver = "com.mysql.cj.jdbc.Driver";
     // Conexão com o banco de dados
-    final private String url= "jdbc:mysql://127.0.0.1/BancoTPI";
+    final private String url= "jdbc:mysql://127.0.0.1:3306/BancoTPI?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true";
     
     final private String usuario="root";
     final private String senha="";
@@ -75,14 +75,19 @@ public class Conexao {
     
     public ResultSet RetornarResultset(String sql){
          ResultSet resultSet = null;
-         conecta();
-         try{
-         statement = conexao.createStatement();
-         resultSet = statement.executeQuery(sql);
-         resultSet.next();
-         }catch (Exception e){
-         JOptionPane.showMessageDialog(null, "Erro ao retornar resultset"+e.getMessage());
+
+         if (!conecta()) {
+             return null;
          }
+
+         try{
+             statement = conexao.createStatement();
+             resultSet = statement.executeQuery(sql);
+             resultSet.next();
+         }catch (SQLException e){
+             JOptionPane.showMessageDialog(null, "Erro ao retornar resultset: " + e.getMessage());
+         }
+
          return resultSet;
  }
 }

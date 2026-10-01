@@ -22,6 +22,7 @@ public class FrmClinica extends javax.swing.JFrame {
      */
     public FrmClinica() {
         initComponents();
+        consultar();
     }
 
 Paciente pac = new Paciente();
@@ -37,14 +38,20 @@ Paciente pac = new Paciente();
         modelo.setNumRows(0);
 
         try{
-            do{
-                modelo.addRow(new String[] {tabela.getString(2), tabela.getString(3),tabela.getString(4),tabela.getString(5),tabela.getString(6),tabela.getString(7)});
+            while (tabela != null && tabela.next()) {
+                modelo.addRow(new Object[] {
+                    tabela.getInt("CodPaciente"),
+                    tabela.getString("Nome"),
+                    tabela.getString("Endereco"),
+                    tabela.getString("Complemento"),
+                    tabela.getString("Rg"),
+                    tabela.getString("Cpf"),
+                    tabela.getString("Data")
+                });
             }
-            while(tabela.next());
         }
         catch(SQLException erro){
-            JOptionPane.showMessageDialog(null,"Erro preencher tabela" + erro);
-
+            JOptionPane.showMessageDialog(null,"Erro preencher tabela: " + erro.getMessage());
         }
     }
     
@@ -154,6 +161,7 @@ Paciente pac = new Paciente();
             }
         });
 
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/edit_clear.png"))); // NOI18N
         btnLimpar.setText("Limpar");
         btnLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,8 +181,8 @@ Paciente pac = new Paciente();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addComponent(btnExcluir)
                 .addGap(43, 43, 43)
-                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addComponent(btnLimpar)
+                .addGap(29, 29, 29))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +362,7 @@ Paciente pac = new Paciente();
         pac.setComplemento(txtComplemento.getText());
         pac.setRg(txtRg.getText());
         pac.setCpf(txtCpf.getText());
-        pac.setRg(txtData.getText());
+        pac.setData(txtData.getText());
         pac.alterar(); 
         consultar();
     }//GEN-LAST:event_btnAlterarActionPerformed

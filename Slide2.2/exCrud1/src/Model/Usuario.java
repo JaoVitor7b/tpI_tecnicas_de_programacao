@@ -70,7 +70,7 @@ public class Usuario {
        }
     public void Alterar(){
         String sql;
-        sql = "UPDATE usuarios set login='" + getLogin()+   "' ,telefone= '" + getTelefone()+ "' ,senha= '" + getSenha() + "' WHERE codigo='" +this.getCodigo()+"' ";
+        sql = "UPDATE usuario set login='" + getLogin()+   "' ,telefone= '" + getTelefone()+ "' ,senha= '" + getSenha() + "' WHERE codigo='" +this.getCodigo()+"' ";
         
         con.executeSQL(sql);
         JOptionPane.showMessageDialog(null, "Registro Alterado com sucesso...");

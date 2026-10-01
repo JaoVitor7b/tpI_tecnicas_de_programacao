@@ -36,14 +36,20 @@ public class FrmUsuario extends javax.swing.JFrame {
         modelo.setNumRows(0);
 
         try{
-            do{
-                modelo.addRow(new String[] {tabela.getString(1),tabela.getString(2), tabela.getString(3),tabela.getString(4)});
+            if (tabela != null && !tabela.isAfterLast()) {
+                do{
+                    modelo.addRow(new String[] {
+                        tabela.getString(1),
+                        tabela.getString(2),
+                        tabela.getString(3),
+                        tabela.getString(4)
+                    });
+                }
+                while(tabela.next());
             }
-            while(tabela.next());
         }
         catch(SQLException erro){
-            JOptionPane.showMessageDialog(null,"Erro preencher tabela" + erro);
-
+            JOptionPane.showMessageDialog(null,"Erro preencher tabela: " + erro.getMessage());
         }
     }
     /**
