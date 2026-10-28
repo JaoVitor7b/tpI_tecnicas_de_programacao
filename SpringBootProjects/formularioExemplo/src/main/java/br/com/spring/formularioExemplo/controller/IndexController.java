@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class indexController {
+public class IndexController {
 
     @GetMapping("/cadastro-produto")
     public String abrirFormulario(){
         return "cadastro";
     }
 
-    @PostMapping("/salva-produto")
+    @PostMapping("/salvar-produto")
     public String salvar(
             @RequestParam("nome") String nome,
             @RequestParam("preco") Double preco,
